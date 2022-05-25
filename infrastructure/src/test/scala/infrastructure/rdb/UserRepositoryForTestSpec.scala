@@ -3,9 +3,9 @@ package infrastructure.rdb
 import domainModel.user.{User, UserId}
 import org.scalatest.FlatSpec
 
-class UserRepositorySpec extends FlatSpec {
+class UserRepositoryForTestSpec extends FlatSpec {
 
-  val userRepository = new UserRepositoryImpl
+  val userRepository = new UserRepository
 
   "find" should "一致するユーザーを返す（名前検索）" in {
     val user = User("1", "すでにある名前")

@@ -1,8 +1,10 @@
 package domainModel.circle
 
-import domainModel.user.{IUserRepository}
+import com.google.inject.Inject
+import domainModel.user.IUserRepository
 
-class CircleFullSpecification(val userRepository: IUserRepository) {
+@Inject
+class CircleFullSpecification @Inject() (val userRepository: IUserRepository) {
   def isSatisfiedBy(circle: Circle): Boolean = {
     val users = userRepository.find(circle.memberIds)
     val premiumUserNumber = 0 // TODO: usersからプレミアムユーザ数を数える

@@ -1,25 +1,24 @@
 package application
 
-import application.UserUsecase.userRepository
+import com.google.inject.Inject
 import domainModel.circle.{
-  Circle,
   CircleFullSpecification,
   CircleId,
   ICircleFactory,
   ICircleRepository
 }
-import domainModel.user.UserId
-import domainService.CircleService
+import domainModel.user.{IUserRepository, UserId}
+import domainService.{CircleService}
 
 import scala.util.{Failure, Success, Try}
 
-object CircleUsecase extends CircleUsecaseModule
-
-trait CircleUsecaseModule {
-  lazy val circleRepository: ICircleRepository = ???
-  lazy val circleFactory: ICircleFactory = ???
-  lazy val circleService: CircleService = ???
-  lazy val circleFullSpecification: CircleFullSpecification = ???
+class CircleUsecase @Inject() (
+    userRepository: IUserRepository,
+    circleRepository: ICircleRepository,
+    circleFactory: ICircleFactory,
+    circleService: CircleService,
+    circleFullSpecification: CircleFullSpecification
+) {
 
   def create(userId: String, circleName: String): Try[Unit] =
     for {

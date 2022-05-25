@@ -5,8 +5,7 @@
 ```bash
 sbt
 
-sbt:root> project presentation
-sbt:presentation> run
+sbt:root> run
 ```
 
 ### テスト

@@ -4,7 +4,7 @@ import domainModel.user.{IUserRepository, User, UserId, UserName}
 
 import scala.util.Try
 
-class UserRepositoryImpl extends IUserRepository {
+class UserRepository extends IUserRepository {
   // TODO: 永続化サービスアクセスする（ORMを利用するのでDAOクラスは用意するが、入出力の型は変えない想定）
   // TODO: ID採番方法をDB依存に変える（ファクトリ）
   // TODO: トランザクションを取り入れる

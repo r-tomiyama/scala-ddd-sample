@@ -1,35 +1,26 @@
 package domainService
 
-import domainModel.user.{IUserRepository, User, UserId, UserName}
+import domainModel.user.{User, UserRepositoryForTest}
 import org.scalatest.FlatSpec
-
-import scala.util.{Failure, Try}
 
 class UserServiceSpec extends FlatSpec {
 
   def userServiceForTest(
-      findUser: Option[User] = None,
-      saveUser: Try[User] = Failure(new RuntimeException(""))
+      userRepository: UserRepositoryForTest = UserRepositoryForTest()
   ): UserService = {
-    class UserRepositoryImplForTest extends IUserRepository {
-      override def find(name: UserName): Option[User] = findUser
-      override def find(userId: UserId): Option[User] = findUser
-      override def find(userIds: List[UserId]): List[User] = List()
-      override def save(user: User): Try[User] = saveUser
-      override def delete(user: User): Try[Unit] = Failure(new RuntimeException)
-    }
-    new UserService(new UserRepositoryImplForTest())
+    new UserService(userRepository)
   }
 
   "exist" should "trueを返す" in {
     val targetUser = User("id", "なまえ")
-    val service = userServiceForTest(findUser = Some(targetUser))
+    val service = userServiceForTest()
     assert(service.exist(targetUser))
   }
 
-  it should "falseを返す" in {
+  "exist" should "falseを返す" in {
     val targetUser = User("id", "なまえ")
-    val service = userServiceForTest()
+    val service =
+      userServiceForTest(UserRepositoryForTest(userFoundByName = None))
     assert(!service.exist(targetUser))
   }
 

@@ -1,17 +1,15 @@
 package application
 
-import com.softwaremill.macwire.wire
+import com.google.inject.Inject
 import domainModel.user.{IUserRepository, User, UserId}
 import domainService.UserService
-import infrastructure.rdb.UserRepositoryImpl
 
 import scala.util.{Failure, Success, Try}
 
-object UserUsecase extends UserUsecaseModule
-
-trait UserUsecaseModule {
-  lazy val userRepository: IUserRepository = wire[UserRepositoryImpl]
-  lazy val userService: UserService = wire[UserService]
+class UserUsecase @Inject() (
+    userRepository: IUserRepository,
+    userService: UserService
+) {
 
   def create(name: String): Try[dto.User] =
     (for {

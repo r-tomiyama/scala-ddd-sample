@@ -1,15 +1,17 @@
 package presentation
 
 import application.UserUsecase
+import com.google.inject.Inject
 
 import scala.io.StdIn
 import scala.util.{Failure, Success}
 
-object Main {
+class Cli @Inject() (userUscase: UserUsecase) {
+
   val operations =
     List("create_user", "find_user", "update_user", "delete_user")
 
-  def main(args: Array[String]): Unit = {
+  def run(): Unit = {
     println(s"行いたい操作を入力してください: ${operations.mkString(",")}")
     val input_operation = StdIn.readLine()
 
@@ -37,7 +39,7 @@ object Main {
     println("ユーザー名を入力してください")
 
     val input = StdIn.readLine()
-    UserUsecase.create(input) match {
+    userUscase.create(input) match {
       case Success(u) => s"ユーザーを作成しました（id: ${u.id}, name: ${u.name}）"
       case Failure(e) => s"ユーザーを作成できませんでした（${e.getMessage}）"
     }
@@ -47,7 +49,7 @@ object Main {
     println("照会したいユーザーのIDを入力してください")
 
     val input = StdIn.readLine()
-    UserUsecase.find(input) match {
+    userUscase.find(input) match {
       case Success(u) => s"id: ${u.id}, name: ${u.name}"
       case Failure(e) => s"ユーザは取得できませんでした（${e.getMessage}）"
     }
@@ -58,7 +60,7 @@ object Main {
 
     val inputs = StdIn.readLine().split(" ")
     if (inputs.size == 2) {
-      UserUsecase.update(inputs(0), inputs(1)) match {
+      userUscase.update(inputs(0), inputs(1)) match {
         case Success(u) => s"更新しました（id: ${u.id}, name: ${u.name}）"
         case Failure(e) => s"ユーザを更新できませんでした（${e.getMessage}）"
       }
@@ -71,7 +73,7 @@ object Main {
     println("削除したいユーザーのIDを入力してください")
 
     val input = StdIn.readLine()
-    UserUsecase.delete(input) match {
+    userUscase.delete(input) match {
       case Success(_) => "ユーザーの削除が完了しました"
       case Failure(e) => s"ユーザは削除できませんでした（${e.getMessage}）"
     }
